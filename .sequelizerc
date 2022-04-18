@@ -1,3 +1,5 @@
+// Peguei este "macete" com o Gaspar(Gabriel) em um vídeo de mentoria... Ajuda na organização.
+
 const path = require('path');
 
 module.exports = {
