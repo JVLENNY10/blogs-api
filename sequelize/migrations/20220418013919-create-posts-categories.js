@@ -5,8 +5,12 @@ module.exports = {
     await queryInterface.createTable('PostsCategories', {
       postId: {
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Categories',
+          key: 'id'
+        },
         type: Sequelize.INTEGER,
       },
 
