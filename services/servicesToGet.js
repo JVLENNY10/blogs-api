@@ -5,4 +5,9 @@ const getUser = async (email) => {
   return user;
 };
 
-module.exports = { getUser };
+const getUsers = async () => {
+  const user = User.findAll();
+  return user;
+};
+
+module.exports = { getUser, getUsers };

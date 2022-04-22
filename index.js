@@ -6,6 +6,8 @@ app.use(express.json());
 
 const { createUser, loginUser } = require('./controllers/controllersToPost');
 
+const auth = require('./middlewares/auth');
+
 const {
   checkDisplayName,
   checkPassword,
@@ -17,6 +19,8 @@ const {
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_req, res) => res.send());
+
+app.get('/user', auth);
 
 app.post(
   '/user',
