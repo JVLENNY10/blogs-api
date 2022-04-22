@@ -30,17 +30,6 @@ const checkPassword = async (req, res, next) => {
   next();
 };
 
-const emailExists = async (req, res, next) => {
-  const { email } = req.body;
-  const exist = await servicesToGet.getUser(email);
-
-  if (exist !== null) {
-    return res.status(409).json({ message: 'User already registered' });
-  }
-
-  next();
-};
-
 const emailIsValid = async (req, res, next) => {
   const { email } = req.body;
   const emailParts = email.split('@');
@@ -66,4 +55,33 @@ const emailNotNull = async (req, res, next) => {
   next();
 };
 
-module.exports = { checkDisplayName, checkPassword, emailExists, emailIsValid, emailNotNull };
+const loginEmailExists = async (req, res, next) => {
+  const { email } = req.body;
+  const exist = await servicesToGet.getUser(email);
+
+  if (exist === null) {
+    return res.status(400).json({ message: 'Ivalid Fields' });
+  }
+
+  next();
+};
+
+const registrationEmailExists = async (req, res, next) => {
+  const { email } = req.body;
+  const exist = await servicesToGet.getUser(email);
+
+  if (exist !== null) {
+    return res.status(409).json({ message: 'User already registered' });
+  }
+
+  next();
+};
+
+module.exports = {
+  checkDisplayName,
+  checkPassword,
+  emailIsValid,
+  emailNotNull,
+  loginEmailExists,
+  registrationEmailExists,
+};
