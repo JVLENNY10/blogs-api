@@ -9,4 +9,12 @@ const createUser = async (req, res) => {
   return res.status(201).json({ token });
 };
 
-module.exports = { createUser };
+const loginUser = async (req, res) => {
+  const { email } = req.body;
+  const user = await servicesToPost.loginUser(req.body);
+  const token = jwtGenerator({ id: user.id, email });
+
+  return res.status(200).json({ token });
+};
+
+module.exports = { createUser, loginUser };
