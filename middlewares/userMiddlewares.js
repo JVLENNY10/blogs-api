@@ -1,4 +1,25 @@
+const jwt = require('jsonwebtoken');
 const servicesToGet = require('../services/servicesToGet');
+
+const authToken = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token not found' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.auth = decoded.data;
+    next();
+  } catch (error) {
+    if (error.name.incluedes('Token')) {
+      return res.status(401).json({ message: 'Expired or invalid token' });
+    }
+
+    next(error);
+  }
+};
 
 const checkDisplayName = async (req, res, next) => {
   const { displayName } = req.body;
@@ -79,6 +100,7 @@ const registrationEmailExists = async (req, res, next) => {
 };
 
 module.exports = {
+  authToken,
   checkDisplayName,
   checkPassword,
   emailIsValid,
