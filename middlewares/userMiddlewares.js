@@ -4,16 +4,16 @@ const servicesToGet = require('../services/servicesToGet');
 const authToken = (req, res, next) => {
   const token = req.headers.authorization;
 
-  if (!token) {
+  if (token === undefined) {
     return res.status(401).json({ message: 'Token not found' });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.auth = decoded.data;
+    req.authToken = decoded.data;
     next();
   } catch (error) {
-    if (error.name.incluedes('Token')) {
+    if (error.name.includes('Token')) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
 

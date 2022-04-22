@@ -6,7 +6,7 @@ const getUser = async (email) => {
 };
 
 const getUsers = async () => {
-  const user = User.findAll();
+  const user = User.findAll({ attributes: { exclude: ['password'] } });
   return user;
 };
 
