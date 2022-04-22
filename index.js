@@ -17,6 +17,6 @@ app.post(
   '/user', checkDisplayName, checkPassword, emailNotNull, emailIsValid, emailExists, createUser,
 );
 
-app.post('/login');
+app.post('/login', checkPassword, emailNotNull, emailIsValid, emailExists);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
