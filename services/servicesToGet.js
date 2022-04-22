@@ -1,6 +1,6 @@
 const { User } = require('../sequelize/models');
 
-const getUser = async (email) => {
+const getUserByEmail = async (email) => {
   const user = User.findOne({ where: { email } });
   return user;
 };
@@ -10,4 +10,4 @@ const getUsers = async () => {
   return user;
 };
 
-module.exports = { getUser, getUsers };
+module.exports = { getUserByEmail, getUsers };

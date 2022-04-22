@@ -12,7 +12,7 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email } = req.body;
-  const user = await servicesToGet.getUser(email);
+  const user = await servicesToGet.getUserByEmail(email);
   const token = jwtGenerator({ id: user.id, email });
 
   return res.status(200).json({ token });

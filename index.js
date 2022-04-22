@@ -20,6 +20,7 @@ const {
 app.get('/', (_req, res) => res.send());
 
 app.get('/user', authToken, getUsers);
+app.get('/user/:id', authToken);
 
 app.post(
   '/user',

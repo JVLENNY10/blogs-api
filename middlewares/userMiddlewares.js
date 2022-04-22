@@ -78,7 +78,7 @@ const emailNotNull = async (req, res, next) => {
 
 const loginEmailExists = async (req, res, next) => {
   const { email } = req.body;
-  const exist = await servicesToGet.getUser(email);
+  const exist = await servicesToGet.getUserByEmail(email);
   console.log(exist);
   if (exist === null) {
     console.log('Aqui!');
@@ -90,7 +90,7 @@ const loginEmailExists = async (req, res, next) => {
 
 const registrationEmailExists = async (req, res, next) => {
   const { email } = req.body;
-  const exist = await servicesToGet.getUser(email);
+  const exist = await servicesToGet.getUserByEmail(email);
 
   if (exist !== null) {
     return res.status(409).json({ message: 'User already registered' });
