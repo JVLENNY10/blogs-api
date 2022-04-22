@@ -14,7 +14,7 @@ const Attributes = {
 
 module.exports = (sequelize) => {
   const User = sequelize.define('User', Attributes, {
-    tableName: 'Users', timestemps: false, undescored: true,
+    tableName: 'Users', timestamps: false, undescored: true,
   });
 
   User.associate = (models) => {

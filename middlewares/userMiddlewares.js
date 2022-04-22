@@ -1,4 +1,4 @@
-const { User } = require('../sequelize/models');
+const servicesToGet = require('../services/servicesToGet');
 
 const checkDisplayName = async (req, res, next) => {
   const { displayName } = req.body;
@@ -12,10 +12,29 @@ const checkDisplayName = async (req, res, next) => {
   next();
 };
 
-const emailExistsInDb = async (req, res) => {
+const checkPassword = async (req, res, next) => {
+  const { password } = req.body;
+
+  if (!password) {
+    return res.status(400).json({ message: '"password" is required' });
+  }
+
+  if (password.length !== 6) {
+    return res.status(400).json({ message: '"password" length must be 6 characters long' });
+  }
+
+  next();
+};
+
+const emailExists = async (req, res, next) => {
   const { email } = req.body;
-  const exist = await User.findOne({ where: { email } });
-  if (exist) return res.status(400).json({ message: 'User already registered' });
+  const exist = await servicesToGet.getUser(email);
+
+  if (exist !== null) {
+    return res.status(409).json({ message: 'User already registered' });
+  }
+
+  next();
 };
 
 const emailIsValid = async (req, res, next) => {
@@ -29,28 +48,14 @@ const emailIsValid = async (req, res, next) => {
   next();
 };
 
-const emailNotNull = async (req, res) => {
+const emailNotNull = async (req, res, next) => {
   const { email } = req.body;
-  if (!email) return res.status(400).json({ message: '"email" is required' });
-};
 
-const checkEmail = async (req, res, next) => {
-  emailNotNull(req, res);
-  emailIsValid(req, res);
-  emailExistsInDb(req, res);
-  next();
-};
-
-const checkPassword = async (req, res, next) => {
-  const { password } = req.body;
-
-  if (!password) return res.status(400).json({ message: '"password" is required' });
-
-  if (password.length !== 6) {
-    return res.status(400).json({ message: '"password" length must be 6 at characters long' });
+  if (!email) {
+    return res.status(400).json({ message: '"email" is required' });
   }
 
   next();
 };
 
-module.exports = { checkDisplayName, checkEmail, checkPassword };
+module.exports = { checkDisplayName, checkPassword, emailExists, emailIsValid, emailNotNull };
