@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const { createUser } = require('./controllers/controllersToCreate');
+const { createUser } = require('./controllers/controllersToPost');
 
 const {
   checkDisplayName, checkPassword, emailExists, emailIsValid, emailNotNull,
