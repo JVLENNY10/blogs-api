@@ -15,7 +15,7 @@ const checkDisplayName = async (req, res, next) => {
 const checkPassword = async (req, res, next) => {
   const { password } = req.body;
 
-  if (!password) {
+  if (password === undefined) {
     return res.status(400).json({ message: '"password" is required' });
   }
 
@@ -58,9 +58,10 @@ const emailNotNull = async (req, res, next) => {
 const loginEmailExists = async (req, res, next) => {
   const { email } = req.body;
   const exist = await servicesToGet.getUser(email);
-
+  console.log(exist);
   if (exist === null) {
-    return res.status(400).json({ message: 'Ivalid Fields' });
+    console.log('Aqui!');
+    return res.status(400).json({ message: 'Invalid fields' });
   }
 
   next();

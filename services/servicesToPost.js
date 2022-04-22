@@ -5,9 +5,4 @@ const createUser = async (userInformations) => {
   return user;
 };
 
-const loginUser = async (userInformations) => {
-  const user = await User.create(userInformations);
-  return user;
-};
-
-module.exports = { createUser, loginUser };
+module.exports = { createUser };
