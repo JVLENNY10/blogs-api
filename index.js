@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const { getUsers } = require('./controllers/controllersToGet');
+const { getUserById, getUsers } = require('./controllers/controllersToGet');
 const { createUser, loginUser } = require('./controllers/controllersToPost');
 const {
   authToken,
@@ -21,7 +21,7 @@ const {
 app.get('/', (_req, res) => res.send());
 
 app.get('/user', authToken, getUsers);
-app.get('/user/:id', checkUserExistsById, authToken);
+app.get('/user/:id', authToken, checkUserExistsById, getUserById);
 
 app.post(
   '/user',
