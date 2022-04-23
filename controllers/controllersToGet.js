@@ -1,5 +1,10 @@
 const servicesToGet = require('../services/servicesToGet');
 
+const getCategories = async (req, res) => {
+  const categories = await servicesToGet.getCategories();
+  return res.status(200).json(categories);
+};
+
 const getUserById = async (req, res) => {
   const { id } = req.params;
   const user = await servicesToGet.getUserById(id);
@@ -7,8 +12,8 @@ const getUserById = async (req, res) => {
 };
 
 const getUsers = async (_req, res) => {
-  const user = await servicesToGet.getUsers();
-  return res.status(200).json(user);
+  const users = await servicesToGet.getUsers();
+  return res.status(200).json(users);
 };
 
-module.exports = { getUserById, getUsers };
+module.exports = { getCategories, getUserById, getUsers };

@@ -1,8 +1,8 @@
 const { Category, User } = require('../sequelize/models');
 
 const getCategories = async () => {
-  const category = await Category.findAll();
-  return category;
+  const categories = await Category.findAll();
+  return categories;
 };
 
 const getUserByEmail = async (email) => {
@@ -16,8 +16,8 @@ const getUserById = async (id) => {
 };
 
 const getUsers = async () => {
-  const user = await User.findAll({ attributes: { exclude: ['password'] } });
-  return user;
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  return users;
 };
 
 module.exports = { getCategories, getUserByEmail, getUserById, getUsers };
