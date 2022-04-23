@@ -2,6 +2,12 @@ const servicesToGet = require('../services/servicesToGet');
 const servicesToPost = require('../services/servicesToPost');
 const jwtGenerator = require('../jwt/jwtGenerator');
 
+const createCategory = async (req, res) => {
+  const { name } = req.body;
+  const category = await servicesToGet.createCategory(name);
+  return res.status(201).json(category);
+};
+
 const createUser = async (req, res) => {
   const { email } = req.body;
   const user = await servicesToPost.createUser(req.body);
@@ -18,4 +24,4 @@ const loginUser = async (req, res) => {
   return res.status(200).json({ token });
 };
 
-module.exports = { createUser, loginUser };
+module.exports = { createCategory, createUser, loginUser };
