@@ -1,4 +1,9 @@
-const { User } = require('../sequelize/models');
+const { Category, User } = require('../sequelize/models');
+
+const getCategories = async () => {
+  const category = await Category.findAll();
+  return category;
+};
 
 const getUserByEmail = async (email) => {
   const user = await User.findOne({ where: { email } });
@@ -15,4 +20,4 @@ const getUsers = async () => {
   return user;
 };
 
-module.exports = { getUserByEmail, getUserById, getUsers };
+module.exports = { getCategories, getUserByEmail, getUserById, getUsers };
