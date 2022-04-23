@@ -9,29 +9,32 @@ const { createUser, loginUser } = require('./controllers/controllersToPost');
 const {
   authToken,
   checkDisplayName,
+  checkEmailExists,
+  checkEmailIsNotNull,
+  checkEmailIsValid,
+  checkEmailNotExists,
   checkPassword,
-  loginEmailExists,
-  registrationEmailExists,
-  emailIsValid,
-  emailNotNull,
+  checkUserExistsById,
 } = require('./middlewares/userMiddlewares');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_req, res) => res.send());
 
 app.get('/user', authToken, getUsers);
-app.get('/user/:id', authToken);
+app.get('/user/:id', checkUserExistsById, authToken);
 
 app.post(
   '/user',
   checkDisplayName,
+  checkEmailIsNotNull,
+  checkEmailIsValid,
+  checkEmailExists,
   checkPassword,
-  emailNotNull,
-  emailIsValid,
-  registrationEmailExists,
   createUser,
 );
 
-app.post('/login', checkPassword, emailNotNull, emailIsValid, loginEmailExists, loginUser);
+app.post(
+  '/login', checkEmailIsNotNull, checkEmailIsValid, checkEmailNotExists, checkPassword, loginUser,
+);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));

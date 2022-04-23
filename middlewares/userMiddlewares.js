@@ -33,6 +33,53 @@ const checkDisplayName = async (req, res, next) => {
   next();
 };
 
+const checkEmailExists = async (req, res, next) => {
+  const { email } = req.body;
+  const exist = await servicesToGet.getUserByEmail(email);
+
+  if (exist !== null) {
+    return res.status(409).json({ message: 'User already registered' });
+  }
+
+  next();
+};
+
+const checkEmailIsValid = async (req, res, next) => {
+  const { email } = req.body;
+  const emailParts = email.split('@');
+
+  if (!email.includes('@') || !emailParts[0] || !emailParts[1]) {
+    return res.status(400).json({ message: '"email" must be a valid email' });
+  }
+
+  next();
+};
+
+const checkEmailIsNotNull = async (req, res, next) => {
+  const { email } = req.body;
+
+  if (email === undefined) {
+    return res.status(400).json({ message: '"email" is required' });
+  }
+
+  if (email === '') {
+    return res.status(400).json({ message: '"email" is not allowed to be empty' });
+  }
+
+  next();
+};
+
+const checkEmailNotExists = async (req, res, next) => {
+  const { email } = req.body;
+  const exist = await servicesToGet.getUserByEmail(email);
+
+  if (exist === null) {
+    return res.status(400).json({ message: 'Invalid fields' });
+  }
+
+  next();
+};
+
 const checkPassword = async (req, res, next) => {
   const { password } = req.body;
 
@@ -51,49 +98,12 @@ const checkPassword = async (req, res, next) => {
   next();
 };
 
-const emailIsValid = async (req, res, next) => {
-  const { email } = req.body;
-  const emailParts = email.split('@');
+const checkUserExistsById = async (req, res, next) => {
+  const { id } = req.params;
+  const exist = await servicesToGet.getUserById(id);
 
-  if (!email.includes('@') || !emailParts[0] || !emailParts[1]) {
-    return res.status(400).json({ message: '"email" must be a valid email' });
-  }
-
-  next();
-};
-
-const emailNotNull = async (req, res, next) => {
-  const { email } = req.body;
-
-  if (email === undefined) {
-    return res.status(400).json({ message: '"email" is required' });
-  }
-
-  if (email === '') {
-    return res.status(400).json({ message: '"email" is not allowed to be empty' });
-  }
-
-  next();
-};
-
-const loginEmailExists = async (req, res, next) => {
-  const { email } = req.body;
-  const exist = await servicesToGet.getUserByEmail(email);
-  console.log(exist);
   if (exist === null) {
-    console.log('Aqui!');
-    return res.status(400).json({ message: 'Invalid fields' });
-  }
-
-  next();
-};
-
-const registrationEmailExists = async (req, res, next) => {
-  const { email } = req.body;
-  const exist = await servicesToGet.getUserByEmail(email);
-
-  if (exist !== null) {
-    return res.status(409).json({ message: 'User already registered' });
+    return res.status(404).json({ message: 'User does not exist' });
   }
 
   next();
@@ -102,9 +112,10 @@ const registrationEmailExists = async (req, res, next) => {
 module.exports = {
   authToken,
   checkDisplayName,
+  checkEmailExists,
+  checkEmailIsNotNull,
+  checkEmailIsValid,
+  checkEmailNotExists,
   checkPassword,
-  emailIsValid,
-  emailNotNull,
-  loginEmailExists,
-  registrationEmailExists,
+  checkUserExistsById,
 };
