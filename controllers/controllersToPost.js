@@ -3,8 +3,7 @@ const servicesToPost = require('../services/servicesToPost');
 const jwtGenerator = require('../jwt/jwtGenerator');
 
 const createCategory = async (req, res) => {
-  const { name } = req.body;
-  const category = await servicesToGet.createCategory(name);
+  const category = await servicesToPost.createCategory(req.body);
   return res.status(201).json(category);
 };
 

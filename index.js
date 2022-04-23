@@ -5,7 +5,8 @@ const app = express();
 app.use(express.json());
 
 const { getUserById, getUsers } = require('./controllers/controllersToGet');
-const { createUser, loginUser } = require('./controllers/controllersToPost');
+const { createCategory, createUser, loginUser } = require('./controllers/controllersToPost');
+const checkCategoryName = require('./middlewares/categoryMiddlewares');
 const {
   authToken,
   checkDisplayName,
@@ -37,6 +38,6 @@ app.post(
   '/login', checkEmailIsNotNull, checkEmailIsValid, checkEmailNotExists, checkPassword, loginUser,
 );
 
-app.post('/categories', authToken);
+app.post('/categories', authToken, checkCategoryName, createCategory);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
