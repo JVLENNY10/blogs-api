@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const { getUserById, getUsers } = require('./controllers/controllersToGet');
+const { getCategories, getUserById, getUsers } = require('./controllers/controllersToGet');
 const { createCategory, createUser, loginUser } = require('./controllers/controllersToPost');
 const checkCategoryName = require('./middlewares/categoryMiddlewares');
 const {
@@ -22,6 +22,8 @@ const {
 app.get('/', (_req, res) => res.send());
 
 app.get('/user', authToken, getUsers);
+app.get('/categories', authToken, getCategories);
+
 app.get('/user/:id', authToken, checkUserExistsById, getUserById);
 
 app.post(

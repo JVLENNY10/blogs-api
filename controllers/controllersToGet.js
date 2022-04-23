@@ -1,6 +1,6 @@
 const servicesToGet = require('../services/servicesToGet');
 
-const getCategories = async (req, res) => {
+const getCategories = async (_req, res) => {
   const categories = await servicesToGet.getCategories();
   return res.status(200).json(categories);
 };
