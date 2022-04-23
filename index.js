@@ -37,4 +37,6 @@ app.post(
   '/login', checkEmailIsNotNull, checkEmailIsValid, checkEmailNotExists, checkPassword, loginUser,
 );
 
+app.post('/categories', authToken);
+
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
