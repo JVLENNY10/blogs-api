@@ -41,5 +41,6 @@ app.post(
 );
 
 app.post('/categories', authToken, checkCategoryName, createCategory);
+app.post('/post', authToken, checkCategoryName, createCategory);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));

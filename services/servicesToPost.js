@@ -1,4 +1,9 @@
-const { Category, User } = require('../sequelize/models');
+const { BlogPost, Category, User } = require('../sequelize/models');
+
+const createBlogPost = async (blogPostInformations) => {
+  const blogPost = await BlogPost.create(blogPostInformations);
+  return blogPost;
+};
 
 const createCategory = async (name) => {
   const category = await Category.create(name);
@@ -10,4 +15,4 @@ const createUser = async (userInformations) => {
   return user;
 };
 
-module.exports = { createCategory, createUser };
+module.exports = { createBlogPost, createCategory, createUser };
