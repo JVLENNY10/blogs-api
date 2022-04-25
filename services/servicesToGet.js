@@ -5,6 +5,11 @@ const getCategories = async () => {
   return categories;
 };
 
+const getCategoryById = async (id) => {
+  const category = await Category.findOne({ where: { id } });
+  return category;
+};
+
 const getUserByEmail = async (email) => {
   const user = await User.findOne({ where: { email } });
   return user;
@@ -20,4 +25,4 @@ const getUsers = async () => {
   return users;
 };
 
-module.exports = { getCategories, getUserByEmail, getUserById, getUsers };
+module.exports = { getCategories, getCategoryById, getUserByEmail, getUserById, getUsers };
