@@ -2,11 +2,6 @@ const servicesToGet = require('../services/servicesToGet');
 
 const checkBlogPostInformations = async (req, res, next) => {
   const { categoryIds, content, title } = req.body;
-  const categories = await servicesToGet.getCategories();
-
-  const categoryIdsAreValid = categories.every((category) => (
-    categoryIds.some((id) => id === category.id)
-  ));
 
   if (categoryIds === undefined) {
     return res.status(400).json({ message: '"categoryIds" is required' });
@@ -19,6 +14,9 @@ const checkBlogPostInformations = async (req, res, next) => {
   if (title === undefined) {
     return res.status(400).json({ message: '"title" is required' });
   }
+
+  const categories = await servicesToGet.getCategories();
+  const categoryIdsAreValid = categories.some((category) => categoryIds.includes(category.id));
 
   if (!categoryIdsAreValid) {
     return res.status(400).json({ message: '"categoryIds" not found' });

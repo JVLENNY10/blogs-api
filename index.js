@@ -5,7 +5,11 @@ const app = express();
 app.use(express.json());
 
 const { getCategories, getUserById, getUsers } = require('./controllers/controllersToGet');
-const { createCategory, createUser, loginUser } = require('./controllers/controllersToPost');
+const {
+  createBlogPost, createCategory, createUser, loginUser,
+} = require('./controllers/controllersToPost');
+
+const checkBlogPostInformations = require('./middlewares/blogPostMiddlewares');
 const checkCategoryName = require('./middlewares/categoryMiddlewares');
 const {
   authToken,
@@ -20,10 +24,8 @@ const {
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_req, res) => res.send());
-
 app.get('/user', authToken, getUsers);
 app.get('/categories', authToken, getCategories);
-
 app.get('/user/:id', authToken, checkUserExistsById, getUserById);
 
 app.post(
@@ -41,6 +43,6 @@ app.post(
 );
 
 app.post('/categories', authToken, checkCategoryName, createCategory);
-app.post('/post', authToken, checkCategoryName, createCategory);
+app.post('/post', authToken, checkBlogPostInformations, createBlogPost);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
