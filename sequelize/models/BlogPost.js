@@ -10,7 +10,7 @@ const Attributes = {
 
 module.exports = (sequelize) => {
   const BlogPost = sequelize.define('BlogPost', Attributes, {
-    createdAt: 'published', tableName: 'BlogPost', undescored: true, updatedAt: 'updated',
+    createdAt: 'published', tableName: 'BlogPosts', undescored: true, updatedAt: 'updated',
   });
 
   BlogPost.associate = (models) => {
