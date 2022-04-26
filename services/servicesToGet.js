@@ -1,4 +1,9 @@
-const { Category, User } = require('../sequelize/models');
+const { BlogPost, Category, User } = require('../sequelize/models');
+
+const getBlogPosts = async () => {
+  const blogPosts = await BlogPost.findAll();
+  return blogPosts;
+};
 
 const getCategories = async () => {
   const categories = await Category.findAll();
@@ -20,4 +25,4 @@ const getUsers = async () => {
   return users;
 };
 
-module.exports = { getCategories, getUserByEmail, getUserById, getUsers };
+module.exports = { getBlogPosts, getCategories, getUserByEmail, getUserById, getUsers };

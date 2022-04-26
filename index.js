@@ -24,8 +24,11 @@ const {
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_req, res) => res.send());
+
 app.get('/user', authToken, getUsers);
 app.get('/categories', authToken, getCategories);
+app.get('/post', authToken);
+
 app.get('/user/:id', authToken, checkUserExistsById, getUserById);
 
 app.post(
