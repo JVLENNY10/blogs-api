@@ -28,12 +28,18 @@ const {
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_req, res) => res.send());
 
-app.get('/user', authToken, getUsers);
 app.get('/categories', authToken, getCategories);
+app.post('/categories', authToken, checkCategoryName, createCategory);
+
+app.post(
+  '/login', checkEmailIsNotNull, checkEmailIsValid, checkEmailNotExists, checkPassword, loginUser,
+);
+
 app.get('/post', authToken, getBlogPosts);
+app.post('/post', authToken, checkBlogPostInformations, createBlogPost);
 
+app.get('/user', authToken, getUsers);
 app.get('/user/:id', authToken, checkUserExistsById, getUserById);
-
 app.post(
   '/user',
   checkDisplayName,
@@ -43,12 +49,5 @@ app.post(
   checkPassword,
   createUser,
 );
-
-app.post(
-  '/login', checkEmailIsNotNull, checkEmailIsValid, checkEmailNotExists, checkPassword, loginUser,
-);
-
-app.post('/categories', authToken, checkCategoryName, createCategory);
-app.post('/post', authToken, checkBlogPostInformations, createBlogPost);
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
