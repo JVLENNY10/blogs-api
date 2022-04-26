@@ -4,7 +4,10 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const { getCategories, getUserById, getUsers } = require('./controllers/controllersToGet');
+const {
+  getBlogPosts, getCategories, getUserById, getUsers,
+} = require('./controllers/controllersToGet');
+
 const {
   createBlogPost, createCategory, createUser, loginUser,
 } = require('./controllers/controllersToPost');
@@ -27,7 +30,7 @@ app.get('/', (_req, res) => res.send());
 
 app.get('/user', authToken, getUsers);
 app.get('/categories', authToken, getCategories);
-app.get('/post', authToken);
+app.get('/post', authToken, getBlogPosts);
 
 app.get('/user/:id', authToken, checkUserExistsById, getUserById);
 
