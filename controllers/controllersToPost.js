@@ -1,9 +1,15 @@
+const jwt = require('jsonwebtoken');
+const jwtGenerator = require('../jwt/jwtGenerator');
 const servicesToGet = require('../services/servicesToGet');
 const servicesToPost = require('../services/servicesToPost');
-const jwtGenerator = require('../jwt/jwtGenerator');
 
 const createBlogPost = async (req, res) => {
-  const blogPost = await servicesToPost.createBlogPost(req.body);
+  const token = req.headers.authorization;
+  const { categoryIds, content, title } = req.body;
+
+  const userId = jwt.decode(token).data.id;
+  const blogPost = await servicesToPost.createBlogPost({ categoryIds, userId, title, content });
+
   return res.status(201).json(blogPost);
 };
 
