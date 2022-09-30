@@ -1,18 +1,35 @@
 const { DataTypes } = require('sequelize');
 
 const Attributes = {
-  id: { allowNull: false, autoIncrement: true, primaryKey: true, type: DataTypes.INTEGER },
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.INTEGER,
+  },
 
-  displayName: { allowNull: false, type: DataTypes.STRING },
+  displayName: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
 
-  email: { allowNull: false, type: DataTypes.STRING },
+  email: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
 
-  password: { allowNull: false, type: DataTypes.INTEGER },
+  password: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
 
-  image: { allowNull: false, type: DataTypes.STRING },
+  image: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
 };
 
-module.exports = (sequelize) => {
+const user = (sequelize) => {
   const User = sequelize.define('User', Attributes, {
     tableName: 'Users', timestamps: false, undescored: true,
   });
@@ -23,3 +40,5 @@ module.exports = (sequelize) => {
 
   return User;
 };
+
+module.exports = user;

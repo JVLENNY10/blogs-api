@@ -1,14 +1,25 @@
 const { DataTypes } = require('sequelize');
 
 const Attributes = {
-  id: { allowNull: false, autoIncrement: true, primaryKey: true, type: DataTypes.INTEGER },
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.INTEGER,
+  },
 
-  title: { allowNull: false, type: DataTypes.STRING },
+  title: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
 
-  content: { allowNull: false, type: DataTypes.STRING },
+  content: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
 };
 
-module.exports = (sequelize) => {
+const blogPost = (sequelize) => {
   const BlogPost = sequelize.define('BlogPost', Attributes, {
     createdAt: 'published', tableName: 'BlogPosts', undescored: true, updatedAt: 'updated',
   });
@@ -19,3 +30,5 @@ module.exports = (sequelize) => {
 
   return BlogPost;
 };
+
+module.exports = blogPost;

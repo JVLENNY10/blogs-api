@@ -1,4 +1,4 @@
-module.exports = (sequelize) => {
+const postCategory = (sequelize) => {
   const PostCategory = sequelize.define('PostCategory', {}, {
     tableName: 'PostsCategories', timestamps: false, undescored: true,
   });
@@ -15,3 +15,5 @@ module.exports = (sequelize) => {
 
   return PostCategory;
 };
+
+module.exports = postCategory;
