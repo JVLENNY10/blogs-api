@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('PostsCategories', {
@@ -8,8 +6,8 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         references: {
+          key: 'id',
           model: 'Categories',
-          key: 'id'
         },
         type: Sequelize.INTEGER,
       },
@@ -19,8 +17,8 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         references: {
+          key: 'id',
           model: 'Categories',
-          key: 'id'
         },
         type: Sequelize.INTEGER,
       }
