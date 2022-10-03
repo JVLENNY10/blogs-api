@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken');
 const usersService = require('./usersService');
 const { BlogPost } = require('../sequelize/models');
+const { decoder } = require('../helpers/jwtHelpers');
 const categoriesService = require('./categoriesService');
 
 const create = async (infos, token) => {
-  const userId = jwt.decode(token).data.id;
+  const userId = decoder(token).data.id;
   const { categoryIds, content, title } = infos;
   const newBlogPost = await BlogPost.create({ categoryIds, userId, title, content });
 
@@ -12,7 +12,7 @@ const create = async (infos, token) => {
 };
 
 const getAll = async (token) => {
-  const userId = jwt.decode(token).data.id;
+  const userId = decoder(token).data.id;
   const blogPosts = await BlogPost.findAll();
   const user = await usersService.getById(userId);
   const categories = await categoriesService.getAll();
