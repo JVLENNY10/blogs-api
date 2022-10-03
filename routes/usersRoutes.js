@@ -12,9 +12,9 @@ const {
 
 const routes = Router();
 
-routes.post('/login', checkEmail, checkLogin, checkPassword, login);
 routes.get('/user', checkToken, getAll);
 routes.get('/user/:id', checkToken, checkById, getById);
 routes.post('/user', checkDisplayName, checkEmail, checkCreate, checkPassword, create);
+routes.post('/login', checkEmail, checkLogin, checkPassword, login);
 
 module.exports = routes;
