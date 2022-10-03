@@ -1,10 +1,10 @@
-const jwtGenerator = require('../jwt/jwtGenerator');
+const { encoder } = require('../helpers/jwtHelpers');
 const usersService = require('../services/usersService');
 
 const create = async (req, res) => {
   const { email } = req.body;
   const { id } = await usersService.create(req.body);
-  const token = jwtGenerator({ id, email });
+  const token = encoder({ id, email });
 
   return res.status(201).json({ token });
 };
@@ -23,7 +23,7 @@ const getById = async (req, res) => {
 const login = async (req, res) => {
   const { email } = req.body;
   const { id } = await usersService.login(email);
-  const token = jwtGenerator({ id, email });
+  const token = encoder({ id, email });
 
   return res.status(200).json({ token });
 };
