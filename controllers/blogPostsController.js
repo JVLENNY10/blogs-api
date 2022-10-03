@@ -16,4 +16,11 @@ const getAll = async (req, res) => {
   return res.status(200).json(blogPosts);
 };
 
-module.exports = { create, getAll };
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const blogPost = await blogPostsService.mountBlogPostById(id, token);
+  return res.status(200).json(blogPost);
+};
+
+module.exports = { create, getAll, getById };
