@@ -23,4 +23,18 @@ const getAll = async (token) => {
   });
 };
 
-module.exports = { create, getAll };
+const getById = async (id) => {
+  const blogPost = await BlogPost.findByPk(id);
+  return blogPost;
+};
+
+const mountBlogPostById = async (id, token) => {
+  const userId = decoder(token).data.id;
+  const user = await usersService.getById(userId);
+  const categories = await categoriesService.getAll();
+  const { title, content, published, updated } = await getById(id);
+
+  return { id: Number(id), title, content, userId, published, updated, user, categories };
+};
+
+module.exports = { create, getAll, getById, mountBlogPostById };
