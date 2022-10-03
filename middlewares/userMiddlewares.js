@@ -1,24 +1,26 @@
-const jwt = require('jsonwebtoken');
-const servicesToGet = require('../services/servicesToGet');
+const { decoder } = require('../helpers/jwtHelpers');
+const usersService = require('../services/usersService');
 
-const authToken = (req, res, next) => {
-  const token = req.headers.authorization;
+const checkCreate = async (req, res, next) => {
+  const { email } = req.body;
+  const user = await usersService.login(email);
 
-  if (!token) {
-    return res.status(401).json({ message: 'Token not found' });
+  if (user !== null) {
+    return res.status(409).json({ message: 'User already registered' });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.authToken = decoded.data;
-    next();
-  } catch (error) {
-    if (error.name.includes('Token')) {
-      return res.status(401).json({ message: 'Expired or invalid token' });
-    }
+  next();
+};
 
-    next(error);
+const checkById = async (req, res, next) => {
+  const { id } = req.params;
+  const user = await usersService.getById(id);
+
+  if (user === null) {
+    return res.status(404).json({ message: 'User does not exist' });
   }
+
+  next();
 };
 
 const checkDisplayName = async (req, res, next) => {
@@ -33,29 +35,7 @@ const checkDisplayName = async (req, res, next) => {
   next();
 };
 
-const checkEmailExists = async (req, res, next) => {
-  const { email } = req.body;
-  const exist = await servicesToGet.getUserByEmail(email);
-
-  if (exist !== null) {
-    return res.status(409).json({ message: 'User already registered' });
-  }
-
-  next();
-};
-
-const checkEmailIsValid = async (req, res, next) => {
-  const { email } = req.body;
-  const emailParts = email.split('@');
-
-  if (!email.includes('@') || !emailParts[0] || !emailParts[1]) {
-    return res.status(400).json({ message: '"email" must be a valid email' });
-  }
-
-  next();
-};
-
-const checkEmailIsNotNull = async (req, res, next) => {
+const checkEmail = async (req, res, next) => {
   const { email } = req.body;
 
   if (email === undefined) {
@@ -66,14 +46,18 @@ const checkEmailIsNotNull = async (req, res, next) => {
     return res.status(400).json({ message: '"email" is not allowed to be empty' });
   }
 
+  if (!email.includes('@') || !email.split('@')[0]) {
+    return res.status(400).json({ message: '"email" must be a valid email' });
+  }
+
   next();
 };
 
-const checkEmailNotExists = async (req, res, next) => {
+const checkLogin = async (req, res, next) => {
   const { email } = req.body;
-  const exist = await servicesToGet.getUserByEmail(email);
+  const user = await usersService.login(email);
 
-  if (exist === null) {
+  if (user === null) {
     return res.status(400).json({ message: 'Invalid fields' });
   }
 
@@ -98,24 +82,32 @@ const checkPassword = async (req, res, next) => {
   next();
 };
 
-const checkUserExistsById = async (req, res, next) => {
-  const { id } = req.params;
-  const exist = await servicesToGet.getUserById(id);
+const checkToken = (req, res, next) => {
+  const token = req.headers.authorization;
 
-  if (exist === null) {
-    return res.status(404).json({ message: 'User does not exist' });
+  if (!token) {
+    return res.status(401).json({ message: 'Token not found' });
   }
 
-  next();
+  try {
+    const { data } = decoder(token, process.env.JWT_SECRET);
+    req.authToken = data;
+    next();
+  } catch (error) {
+    if (error.name.includes('Token')) {
+      return res.status(401).json({ message: 'Expired or invalid token' });
+    }
+
+    next(error);
+  }
 };
 
 module.exports = {
-  authToken,
+  checkById,
+  checkCreate,
   checkDisplayName,
-  checkEmailExists,
-  checkEmailIsNotNull,
-  checkEmailIsValid,
-  checkEmailNotExists,
+  checkEmail,
+  checkLogin,
   checkPassword,
-  checkUserExistsById,
+  checkToken,
 };
