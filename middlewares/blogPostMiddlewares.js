@@ -1,4 +1,16 @@
+const blogPostsService = require('../services/blogPostsService');
 const categoriesService = require('../services/categoriesService');
+
+const checkById = async (req, res, next) => {
+  const { id } = req.params;
+  const blogPost = await blogPostsService.getById(id);
+
+  if (blogPost === null) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
+
+  next();
+};
 
 const checkCategoryIds = async (req, res, next) => {
   const { categoryIds } = req.body;
@@ -37,4 +49,4 @@ const checkTitle = async (req, res, next) => {
   next();
 };
 
-module.exports = { checkCategoryIds, checkContent, checkTitle };
+module.exports = { checkById, checkCategoryIds, checkContent, checkTitle };
