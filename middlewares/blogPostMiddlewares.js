@@ -1,21 +1,13 @@
-const servicesToGet = require('../services/servicesToGet');
+const categoriesService = require('../services/categoriesService');
 
-const checkBlogPostInformations = async (req, res, next) => {
-  const { categoryIds, content, title } = req.body;
+const checkCategoryIds = async (req, res, next) => {
+  const { categoryIds } = req.body;
+  const categories = await categoriesService.getAll();
 
   if (categoryIds === undefined) {
     return res.status(400).json({ message: '"categoryIds" is required' });
   }
 
-  if (content === undefined) {
-    return res.status(400).json({ message: '"content" is required' });
-  }
-
-  if (title === undefined) {
-    return res.status(400).json({ message: '"title" is required' });
-  }
-
-  const categories = await servicesToGet.getCategories();
   const categoryIdsAreValid = categories.some((category) => categoryIds.includes(category.id));
 
   if (!categoryIdsAreValid) {
@@ -25,4 +17,24 @@ const checkBlogPostInformations = async (req, res, next) => {
   next();
 };
 
-module.exports = checkBlogPostInformations;
+const checkContent = async (req, res, next) => {
+  const { content } = req.body;
+
+  if (content === undefined) {
+    return res.status(400).json({ message: '"content" is required' });
+  }
+
+  next();
+};
+
+const checkTitle = async (req, res, next) => {
+  const { title } = req.body;
+
+  if (title === undefined) {
+    return res.status(400).json({ message: '"title" is required' });
+  }
+
+  next();
+};
+
+module.exports = { checkCategoryIds, checkContent, checkTitle };
