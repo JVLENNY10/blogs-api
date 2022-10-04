@@ -9,6 +9,12 @@ const create = async (req, res) => {
   return res.status(201).json({ token });
 };
 
+const destroy = async (req, res) => {
+  const token = req.headers.authorization;
+  await usersService.destroy(token);
+  return res.status(204).end();
+};
+
 const getAll = async (_req, res) => {
   const users = await usersService.getAll();
   return res.status(200).json(users);
@@ -28,4 +34,4 @@ const login = async (req, res) => {
   return res.status(200).json({ token });
 };
 
-module.exports = { create, getAll, getById, login };
+module.exports = { create, destroy, getAll, getById, login };
