@@ -11,6 +11,8 @@ const create = async (infos, token) => {
   return newBlogPost;
 };
 
+const destroy = async (id) => BlogPost.destroy({ where: { id } });
+
 const getAll = async () => {
   const blogPosts = await BlogPost.findAll();
   const categories = await categoriesService.getAll();
@@ -46,4 +48,4 @@ const update = async (id, infos, token) => {
   return { title, content, userId, categories };
 };
 
-module.exports = { create, getAll, getById, mountById, update };
+module.exports = { create, destroy, getAll, getById, mountById, update };
