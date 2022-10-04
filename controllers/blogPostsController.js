@@ -10,17 +10,24 @@ const create = async (req, res) => {
   return res.status(201).json({ id, userId, title, content });
 };
 
-const getAll = async (req, res) => {
-  const token = req.headers.authorization;
-  const blogPosts = await blogPostsService.getAll(token);
+const getAll = async (_req, res) => {
+  const blogPosts = await blogPostsService.getAll();
   return res.status(200).json(blogPosts);
 };
 
 const getById = async (req, res) => {
   const { id } = req.params;
-  const token = req.headers.authorization;
-  const blogPost = await blogPostsService.mountBlogPostById(id, token);
+  const blogPost = await blogPostsService.mountById(id);
   return res.status(200).json(blogPost);
 };
 
-module.exports = { create, getAll, getById };
+const update = async (req, res) => {
+  const infos = req.body;
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const blogPost = await blogPostsService.update(id, infos, token);
+
+  return res.status(200).json(blogPost);
+};
+
+module.exports = { create, getAll, getById, update };
