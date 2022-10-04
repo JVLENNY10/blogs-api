@@ -23,8 +23,14 @@ const getAll = async (_req, res) => {
 
 const getById = async (req, res) => {
   const { id } = req.params;
-  const blogPost = await blogPostsService.mountById(id);
+  const blogPost = await blogPostsService.getById(id);
   return res.status(200).json(blogPost);
+};
+
+const getBySearchTerm = async (req, res) => {
+  const searchTerm = req.query.q;
+  const blogPosts = await blogPostsService.getBySearchTerm(searchTerm);
+  return res.status(200).json(blogPosts);
 };
 
 const update = async (req, res) => {
@@ -36,4 +42,4 @@ const update = async (req, res) => {
   return res.status(200).json(blogPost);
 };
 
-module.exports = { create, destroy, getAll, getById, update };
+module.exports = { create, destroy, getAll, getById, getBySearchTerm, update };
