@@ -10,6 +10,12 @@ const create = async (req, res) => {
   return res.status(201).json({ id, userId, title, content });
 };
 
+const destroy = async (req, res) => {
+  const { id } = req.params;
+  await blogPostsService.destroy(id);
+  return res.status(204).end();
+};
+
 const getAll = async (_req, res) => {
   const blogPosts = await blogPostsService.getAll();
   return res.status(200).json(blogPosts);
@@ -30,4 +36,4 @@ const update = async (req, res) => {
   return res.status(200).json(blogPost);
 };
 
-module.exports = { create, getAll, getById, update };
+module.exports = { create, destroy, getAll, getById, update };
