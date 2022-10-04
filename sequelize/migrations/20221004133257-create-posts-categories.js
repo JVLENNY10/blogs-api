@@ -5,9 +5,10 @@ module.exports = {
         allowNull: false,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
+        primaryKey: true,
         references: {
           key: 'id',
-          model: 'Categories',
+          model: 'BlogPosts',
         },
         type: Sequelize.INTEGER,
       },
@@ -16,12 +17,13 @@ module.exports = {
         allowNull: false,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
+        primaryKey: true,
         references: {
           key: 'id',
           model: 'Categories',
         },
         type: Sequelize.INTEGER,
-      }
+      },
     });
   },
 
