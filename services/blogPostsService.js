@@ -11,11 +11,12 @@ const create = async (infos, token) => {
   return newBlogPost;
 };
 
-const getAll = async (token) => {
-  const userId = decoder(token).data.id;
+const getAll = async () => {
   const blogPosts = await BlogPost.findAll();
-  const user = await usersService.getById(userId);
   const categories = await categoriesService.getAll();
+
+  const { userId } = blogPosts[0];
+  const user = await usersService.getById(userId);
 
   return blogPosts.map((post) => {
     const { id, title, content, published, updated } = post;
@@ -28,13 +29,21 @@ const getById = async (id) => {
   return blogPost;
 };
 
-const mountBlogPostById = async (id, token) => {
-  const userId = decoder(token).data.id;
-  const user = await usersService.getById(userId);
+const mountById = async (id) => {
   const categories = await categoriesService.getAll();
-  const { title, content, published, updated } = await getById(id);
-
+  const { title, content, userId, published, updated } = await getById(id);
+  const user = await usersService.getById(userId);
+  
   return { id: Number(id), title, content, userId, published, updated, user, categories };
 };
 
-module.exports = { create, getAll, getById, mountBlogPostById };
+const update = async (id, infos, token) => {
+  const { title, content } = infos;
+  const userId = decoder(token).data.id;
+  await BlogPost.update(infos, { where: { id } });
+  const categories = await categoriesService.getAll();
+
+  return { title, content, userId, categories };
+};
+
+module.exports = { create, getAll, getById, mountById, update };
