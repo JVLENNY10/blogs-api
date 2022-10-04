@@ -1,8 +1,14 @@
 const { User } = require('../sequelize/models');
+const { decoder } = require('../helpers/jwtHelpers');
 
 const create = async (infos) => {
   const newUser = await User.create(infos);
   return newUser;
+};
+
+const destroy = async (token) => {
+  const { id } = decoder(token).data;
+  await User.destroy({ where: { id } });
 };
 
 const getAll = async () => {
@@ -20,4 +26,4 @@ const login = async (email) => {
   return user;
 };
 
-module.exports = { create, getAll, getById, login };
+module.exports = { create, destroy, getAll, getById, login };
